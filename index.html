@@ -79,4 +79,103 @@
 
 <script>
     let studentData = [];
-    let originalPrefix = "";
+    let originalPrefix = ""; 
+    const grid = document.getElementById('grid');
+
+    window.onbeforeunload = function() { return "변경사항이 저장되지 않을 수 있습니다."; };
+
+    document.getElementById('csvFile').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const fileName = file.name;
+        const match = fileName.match(/^(\d+)/);
+        originalPrefix = match ? match[1] : "소하중_발표";
+
+        document.getElementById('file-info').innerText = `현재 파일: ${fileName}`;
+
+        const reader = new FileReader();
+        reader.readAsText(file, 'CP949'); 
+
+        reader.onload = function(event) {
+            const text = event.target.result;
+            const rows = text.trim().split(/\r?\n/);
+            grid.innerHTML = '';
+            studentData = [];
+
+            rows.forEach((row, index) => {
+                const cols = row.split(',');
+                if (cols.length >= 3 && index < 32) {
+                    const student = {
+                        class: cols[0].trim(),
+                        no: cols[1].trim(),
+                        name: cols[2].trim(),
+                        count: parseInt(cols[3]) || 0
+                    };
+                    studentData.push(student);
+                    createCard(student, index);
+                }
+            });
+        };
+    });
+
+    function createCard(data, index) {
+        const card = document.createElement('div');
+        card.id = `card-${index}`;
+        updateCardStyle(card, data.count);
+        
+        // 귀여운 아바타 스타일 변경 (adventurer)
+        const imgUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(data.name)}`;
+        
+        card.innerHTML = `
+            <div class="count-badge" id="count-${index}">${data.count}</div>
+            <img class="animal-img" src="${imgUrl}">
+            <div class="info">
+                <div class="class-no">${data.class}반 ${data.no}번</div>
+                <div class="name">${data.name}</div>
+            </div>
+        `;
+
+        card.onclick = () => {
+            studentData[index].count++;
+            const newCount = studentData[index].count;
+            document.getElementById(`count-${index}`).innerText = newCount;
+            updateCardStyle(card, newCount);
+        };
+
+        grid.appendChild(card);
+    }
+
+    function updateCardStyle(card, count) {
+        card.className = 'student-card'; 
+        if (count > 30) {
+            card.classList.add('card-red');
+        } else if (count > 10) {
+            card.classList.add('card-orange');
+        }
+    }
+
+    function downloadCSV() {
+        if (studentData.length === 0) return alert("데이터가 없습니다.");
+
+        let csvContent = "";
+        studentData.forEach(s => {
+            csvContent += `${s.class},${s.no},${s.name},${s.count}\n`;
+        });
+
+        const today = new Date();
+        const dateStr = today.getFullYear() + 
+                        String(today.getMonth() + 1).padStart(2, '0') + 
+                        String(today.getDate()).padStart(2, '0');
+
+        const newFileName = `${originalPrefix}_${dateStr}.csv`;
+
+        const blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = newFileName;
+        link.click();
+    }
+</script>
+</body>
+</html>
