@@ -4,36 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>소하중학교 2학년 발표 체크리스트</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-color: #f0f4f8; --primary-color: #2c3e50; }
+        :root { --bg-color: #f7f9fc; --primary-color: #34495e; --accent-color: #2c3e50; }
         body { font-family: 'Malgun Gothic', sans-serif; background-color: var(--bg-color); margin: 0; padding: 10px; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         
-        /* 📰 신문 헤드라인 스타일 제목 바 */
+        /* 📰 신문 헤드라인 스타일 제목 바 (더 확실하게 변경) */
         #headline-bar {
             display: flex; align-items: center; justify-content: center;
-            background-color: white; padding: 15px; border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 10px;
-            border-bottom: 5px solid var(--primary-color);
+            background-color: white; padding: 20px; border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1); margin: 0 auto 15px; /* 중앙 정렬 */
+            border-bottom: 6px solid var(--accent-color);
+            width: 95%; /* 전체 가로 폭 조정 */
+            box-sizing: border-box;
         }
-        .school-logo { height: 50px; margin-right: 15px; } /* 교표 크기 */
+        .school-logo { height: 60px; margin-right: 20px; } /* 교표 크기 확대 */
         .headline-title {
-            font-family: 'Nanum Brush Script', cursive; /* 귀여운 글씨체 */
-            font-size: 3.5rem; color: var(--primary-color); margin: 0;
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+            font-family: 'Jua', sans-serif; /* 더 안정적이고 귀여운 '주아' 폰트 사용 */
+            font-size: 3rem; color: var(--accent-color); margin: 0;
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+            display: block; /* 글자가 확실히 보이도록 설정 */
         }
 
         /* 컨트롤 바 (파일 업로드/저장) */
         #control-bar {
+            width: 95%; margin: 0 auto 15px; /* 제목 바와 너비 맞춤 */
             height: 50px; display: flex; align-items: center; justify-content: space-between;
-            background: rgba(255,255,255,0.8); padding: 0 20px; border-radius: 10px;
-            margin-bottom: 10px; backdrop-filter: blur(5px);
+            background: rgba(255,255,255,0.9); padding: 0 20px; border-radius: 10px;
+            backdrop-filter: blur(5px); box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-sizing: border-box;
         }
         .btn-save { background-color: #27ae60; color: white; border: none; padding: 8px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .btn-save:hover { background-color: #219150; transform: scale(1.05); }
 
-        /* 그리드 영역 */
-        .grid-container { display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(4, 1fr); gap: 10px; flex-grow: 1; }
+        /* 그리드 영역 (전체 크기의 95%로 축소) */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 10px;
+            flex-grow: 1;
+            width: 95%; /* 기존 폭의 95%로 조정 */
+            margin: 0 auto; /* 중앙 정렬 */
+        }
 
         /* 학생 카드 스타일 */
         .student-card { background: white; border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: all 0.3s ease; border: 4px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
@@ -58,7 +71,7 @@
 <body>
 
 <div id="headline-bar">
-    <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2MjAxOTAzMjFfMjgx%2FMDAxNTUzMTU4MTkyNDYw.8_JvD3H2H1N_b4r-C-7G2S2M_4W1_S5U7_H_E9F_gIg.PNG.sohamiddle%2Flogo.png&type=sc960_832" alt="소하중 교표" class="school-logo" onerror="this.style.display='none'">
+    <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2MjAxOTAzMjFfMjgx%2FMDAxNTUzMTU4MTkyNDYw.8_JvD3H2H1N_b4r-C-7G2S2M_4W1_S5U7_H_E9F_gIg.PNG.sohamiddle%2Flogo.png&type=sc960_832" alt="소하중 교표" class="school-logo">
     <h1 class="headline-title">소하중학교 2학년 발표 체크리스트</h1>
 </div>
 
@@ -73,7 +86,7 @@
 
 <div class="grid-container" id="grid">
     <div style="grid-column: span 8; text-align: center; padding-top: 50px; color: #bbb; font-size: 1.3rem;">
-        CSV 파일을 불러오면 명렬표가 나타납니다.
+        먼저 CSV 파일을 불러와 주세요. (반, 번호, 이름, 횟수)
     </div>
 </div>
 
