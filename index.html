@@ -2,60 +2,67 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>프리미엄 동물 발표 체크판</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>소하중학교 2학년 발표 체크리스트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap" rel="stylesheet">
     <style>
-        :root { --bg-color: #f4f7f6; }
+        :root { --bg-color: #f0f4f8; --primary-color: #2c3e50; }
         body { font-family: 'Malgun Gothic', sans-serif; background-color: var(--bg-color); margin: 0; padding: 10px; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         
-        #header { height: 60px; display: flex; align-items: center; justify-content: space-between; background: #fff; padding: 0 20px; border-radius: 15px; margin-bottom: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .btn-save { background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn-save:hover { background-color: #388E3C; transform: scale(1.05); }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            grid-template-rows: repeat(4, 1fr);
-            gap: 12px;
-            flex-grow: 1;
+        /* 📰 신문 헤드라인 스타일 제목 바 */
+        #headline-bar {
+            display: flex; align-items: center; justify-content: center;
+            background-color: white; padding: 15px; border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 10px;
+            border-bottom: 5px solid var(--primary-color);
+        }
+        .school-logo { height: 50px; margin-right: 15px; } /* 교표 크기 */
+        .headline-title {
+            font-family: 'Nanum Brush Script', cursive; /* 귀여운 글씨체 */
+            font-size: 3.5rem; color: var(--primary-color); margin: 0;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
         }
 
-        .student-card {
-            background: white;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.3s ease;
-            border: 4px solid transparent;
+        /* 컨트롤 바 (파일 업로드/저장) */
+        #control-bar {
+            height: 50px; display: flex; align-items: center; justify-content: space-between;
+            background: rgba(255,255,255,0.8); padding: 0 20px; border-radius: 10px;
+            margin-bottom: 10px; backdrop-filter: blur(5px);
         }
+        .btn-save { background-color: #27ae60; color: white; border: none; padding: 8px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-save:hover { background-color: #219150; transform: scale(1.05); }
 
-        /* 횟수별 색상 효과 */
-        .card-orange { border-color: #ff9f43 !important; box-shadow: 0 0 15px rgba(255, 159, 67, 0.4); background-color: #fff9f4; }
-        .card-gold { border-color: #feca57 !important; box-shadow: 0 0 25px rgba(254, 202, 87, 0.6); background-color: #fffef0; animation: glow 1.5s infinite alternate; }
+        /* 그리드 영역 */
+        .grid-container { display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(4, 1fr); gap: 10px; flex-grow: 1; }
 
-        @keyframes glow {
-            from { box-shadow: 0 0 10px #feca57; }
-            to { box-shadow: 0 0 25px #ff9f43; }
-        }
+        /* 학생 카드 스타일 */
+        .student-card { background: white; border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: all 0.3s ease; border: 4px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .student-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-        .animal-img { width: 55%; aspect-ratio: 1/1; border-radius: 50%; margin-bottom: 5px; transition: 0.3s; }
+        /* 횟수별 효과 */
+        .card-orange { border-color: #e67e22 !important; background-color: #fffaf5; }
+        .card-red { border-color: #e74c3c !important; background-color: #fff5f5; animation: pulse-red 1.5s infinite alternate; }
+
+        @keyframes pulse-red { from { box-shadow: 0 0 10px rgba(231, 76, 60, 0.4); } to { box-shadow: 0 0 20px rgba(231, 76, 60, 0.7); } }
+
+        /* 아바타 및 텍스트 */
+        .animal-img { width: 50%; aspect-ratio: 1/1; border-radius: 50%; margin-bottom: 5px; }
         .name { font-size: 1.2vw; font-weight: bold; color: #333; }
-        .class-no { font-size: 0.8vw; color: #999; }
+        .class-no { font-size: 0.8vw; color: #888; }
         
-        .count-badge {
-            position: absolute; top: 10px; right: 10px;
-            background: #2f3542; color: white;
-            padding: 2px 10px; border-radius: 12px;
-            font-weight: bold; font-size: 1.1vw;
-        }
+        /* 배지 */
+        .count-badge { position: absolute; top: 8px; right: 8px; background: #34495e; color: white; padding: 2px 10px; border-radius: 12px; font-weight: bold; font-size: 1.1vw; }
+        .card-red .count-badge { background: #e74c3c; }
     </style>
 </head>
 <body>
 
-<div id="header">
+<div id="headline-bar">
+    <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2MjAxOTAzMjFfMjgx%2FMDAxNTUzMTU4MTkyNDYw.8_JvD3H2H1N_b4r-C-7G2S2M_4W1_S5U7_H_E9F_gIg.PNG.sohamiddle%2Flogo.png&type=sc960_832" alt="소하중 교표" class="school-logo" onerror="this.style.display='none'">
+    <h1 class="headline-title">소하중학교 2학년 발표 체크리스트</h1>
+</div>
+
+<div id="control-bar">
     <div>
         <strong>CSV 불러오기: </strong>
         <input type="file" id="csvFile" accept=".csv">
@@ -65,112 +72,11 @@
 </div>
 
 <div class="grid-container" id="grid">
-    <div style="grid-column: span 8; text-align: center; padding-top: 100px; color: #ccc; font-size: 1.5rem;">
-        CSV 파일을 선택하면 8x4 명렬표가 생성됩니다.
+    <div style="grid-column: span 8; text-align: center; padding-top: 50px; color: #bbb; font-size: 1.3rem;">
+        CSV 파일을 불러오면 명렬표가 나타납니다.
     </div>
 </div>
 
 <script>
     let studentData = [];
-    let originalPrefix = ""; // 파일명 앞쪽 숫자 저장용
-    const grid = document.getElementById('grid');
-
-    window.onbeforeunload = function() { return "변경사항이 저장되지 않을 수 있습니다."; };
-
-    document.getElementById('csvFile').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        // 파일명에서 앞 숫자 추출 (예: 1_20231024 -> 1)
-        const fileName = file.name;
-        const match = fileName.match(/^(\d+)/);
-        originalPrefix = match ? match[1] : "발표체크";
-
-        document.getElementById('file-info').innerText = `현재 파일: ${fileName}`;
-
-        const reader = new FileReader();
-        reader.readAsText(file, 'CP949'); 
-
-        reader.onload = function(event) {
-            const text = event.target.result;
-            const rows = text.trim().split(/\r?\n/);
-            grid.innerHTML = '';
-            studentData = [];
-
-            rows.forEach((row, index) => {
-                const cols = row.split(',');
-                if (cols.length >= 3 && index < 32) {
-                    const student = {
-                        class: cols[0].trim(),
-                        no: cols[1].trim(),
-                        name: cols[2].trim(),
-                        count: parseInt(cols[3]) || 0
-                    };
-                    studentData.push(student);
-                    createCard(student, index);
-                }
-            });
-        };
-    });
-
-    function createCard(data, index) {
-        const card = document.createElement('div');
-        card.id = `card-${index}`;
-        updateCardStyle(card, data.count);
-        
-        // 동물 아바타 (이름 기반 고유 이미지)
-        const imgUrl = `https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=${encodeURIComponent(data.name)}`;
-        
-        card.innerHTML = `
-            <div class="count-badge" id="count-${index}">${data.count}</div>
-            <img class="animal-img" src="${imgUrl}">
-            <div class="info">
-                <div class="class-no">${data.class}반 ${data.no}번</div>
-                <div class="name">${data.name}</div>
-            </div>
-        `;
-
-        card.onclick = () => {
-            studentData[index].count++;
-            const newCount = studentData[index].count;
-            document.getElementById(`count-${index}`).innerText = newCount;
-            updateCardStyle(card, newCount);
-        };
-
-        grid.appendChild(card);
-    }
-
-    function updateCardStyle(card, count) {
-        card.className = 'student-card'; // 초기화
-        if (count > 30) {
-            card.classList.add('card-gold');
-        } else if (count > 10) {
-            card.classList.add('card-orange');
-        }
-    }
-
-    function downloadCSV() {
-        if (studentData.length === 0) return alert("데이터가 없습니다.");
-
-        let csvContent = "";
-        studentData.forEach(s => {
-            csvContent += `${s.class},${s.no},${s.name},${s.count}\n`;
-        });
-
-        // 오늘 날짜 구하기 (YYYYMMDD)
-        const today = new Date();
-        const dateStr = today.getFullYear() + 
-                        String(today.getMonth() + 1).padStart(2, '0') + 
-                        String(today.getDate()).padStart(2, '0');
-
-        const newFileName = `${originalPrefix}_${dateStr}.csv`;
-
-        const blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = newFileName;
-        link.click();
-    }
-</script>
-</body>
-</html>
+    let originalPrefix = "";
