@@ -33,7 +33,7 @@
         .btn-save { background-color: #27ae60; color: white; border: none; padding: 8px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .btn-save:hover { background-color: #219150; transform: scale(1.05); }
 
-        /* 그리드 영역 */
+        /* 그리드 영역 (95% 크기) */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
@@ -80,7 +80,7 @@
 
 <div class="grid-container" id="grid">
     <div style="grid-column: span 8; text-align: center; padding-top: 100px; color: #bbb; font-size: 1.5rem; font-family: 'Jua', sans-serif;">
-        명렬표(CSV)를 불러오면 귀여운 동물들이 나타납니다!
+        파일을 불러오면 귀여운 동물들이 나타납니다!
     </div>
 </div>
 
@@ -131,7 +131,6 @@
         card.id = `card-${index}`;
         updateCardStyle(card, data.count);
         
-        // 🐹 귀여운 동물 아바타 세팅 (Big Ears 스타일)
         const imgUrl = `https://api.dicebear.com/7.x/big-ears-neutral/svg?seed=${encodeURIComponent(data.name)}`;
         
         card.innerHTML = `
