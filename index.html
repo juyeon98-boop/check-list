@@ -9,13 +9,13 @@
         :root { --bg-color: #f7f9fc; --primary-color: #34495e; --accent-color: #2c3e50; }
         body { font-family: 'Malgun Gothic', sans-serif; background-color: var(--bg-color); margin: 0; padding: 10px; display: flex; flex-direction: column; height: 100vh; overflow: hidden; align-items: center; }
         
-        /* 📰 타이틀 바 */
+        /* 📰 타이틀 바 (95% 너비 적용) */
         #headline-bar {
             display: flex; align-items: center; justify-content: center;
             background-color: white; padding: 25px; border-radius: 15px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.1); margin-bottom: 15px;
             border-bottom: 6px solid var(--accent-color);
-            width: 95%; box-sizing: border-box;
+            width: 95%; box-sizing: border-box; /* 너비 95% */
         }
         .headline-title {
             font-family: 'Jua', sans-serif;
@@ -23,24 +23,24 @@
             letter-spacing: 1px;
         }
 
-        /* 컨트롤 바 */
+        /* 컨트롤 바 (95% 너비 적용) */
         #control-bar {
             width: 95%; height: 50px; display: flex; align-items: center; justify-content: space-between;
             background: rgba(255,255,255,0.9); padding: 0 20px; border-radius: 10px;
             margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            box-sizing: border-box;
+            box-sizing: border-box; /* 너비 95% */
         }
         .btn-save { background-color: #27ae60; color: white; border: none; padding: 8px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .btn-save:hover { background-color: #219150; transform: scale(1.05); }
 
-        /* 그리드 영역 (95% 크기) */
+        /* 그리드 영역 (전체 표 크기 95%로 축소) */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(4, 1fr);
             gap: 12px;
             flex-grow: 1;
-            width: 95%;
+            width: 95%; /* 기존 가로폭의 95%로 조정 */
             margin-bottom: 10px;
         }
 
@@ -54,7 +54,7 @@
 
         @keyframes pulse-red { from { box-shadow: 0 0 10px rgba(231, 76, 60, 0.4); } to { box-shadow: 0 0 25px rgba(231, 76, 60, 0.7); } }
 
-        /* 🐹 동물 아바타 이미지 */
+        /* 🐹 동물 아바타 이미지로 변경 (style=big-ears-neutral) */
         .animal-img { width: 55%; aspect-ratio: 1/1; border-radius: 50%; margin-bottom: 5px; background-color: #f0f0f0; }
         .name { font-size: 1.2vw; font-weight: bold; color: #333; }
         .class-no { font-size: 0.8vw; color: #888; }
@@ -131,6 +131,7 @@
         card.id = `card-${index}`;
         updateCardStyle(card, data.count);
         
+        // 🐹 귀여운 동물 아바타로 변경 (seed에 이름 사용)
         const imgUrl = `https://api.dicebear.com/7.x/big-ears-neutral/svg?seed=${encodeURIComponent(data.name)}`;
         
         card.innerHTML = `
@@ -146,42 +147,4 @@
             studentData[index].count++;
             const newCount = studentData[index].count;
             document.getElementById(`count-${index}`).innerText = newCount;
-            updateCardStyle(card, newCount);
-        };
-
-        grid.appendChild(card);
-    }
-
-    function updateCardStyle(card, count) {
-        card.className = 'student-card'; 
-        if (count > 30) {
-            card.classList.add('card-red');
-        } else if (count > 10) {
-            card.classList.add('card-orange');
-        }
-    }
-
-    function downloadCSV() {
-        if (studentData.length === 0) return alert("데이터가 없습니다.");
-
-        let csvContent = "";
-        studentData.forEach(s => {
-            csvContent += `${s.class},${s.no},${s.name},${s.count}\n`;
-        });
-
-        const today = new Date();
-        const dateStr = today.getFullYear() + 
-                        String(today.getMonth() + 1).padStart(2, '0') + 
-                        String(today.getDate()).padStart(2, '0');
-
-        const newFileName = `${originalPrefix}_${dateStr}.csv`;
-
-        const blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = newFileName;
-        link.click();
-    }
-</script>
-</body>
-</html>
+            updateCardStyle(
