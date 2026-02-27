@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>소하중학교 2학년 발표 체크리스트</title>
+    <title>소하중학교 2학년 정보교과 발표 체크리스트</title>
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <style>
         :root { --bg-color: #f7f9fc; --primary-color: #34495e; --accent-color: #2c3e50; }
         body { font-family: 'Malgun Gothic', sans-serif; background-color: var(--bg-color); margin: 0; padding: 10px; display: flex; flex-direction: column; height: 100vh; overflow: hidden; align-items: center; }
         
-        /* 📰 로고 없이 깔끔한 헤드라인 */
+        /* 📰 타이틀 바 */
         #headline-bar {
             display: flex; align-items: center; justify-content: center;
             background-color: white; padding: 25px; border-radius: 15px;
@@ -19,8 +19,8 @@
         }
         .headline-title {
             font-family: 'Jua', sans-serif;
-            font-size: 3.2rem; color: var(--accent-color); margin: 0;
-            letter-spacing: 2px;
+            font-size: 3rem; color: var(--accent-color); margin: 0;
+            letter-spacing: 1px;
         }
 
         /* 컨트롤 바 */
@@ -33,7 +33,7 @@
         .btn-save { background-color: #27ae60; color: white; border: none; padding: 8px 18px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
         .btn-save:hover { background-color: #219150; transform: scale(1.05); }
 
-        /* 그리드 영역 (전체 폭의 95%) */
+        /* 그리드 영역 */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
@@ -54,12 +54,11 @@
 
         @keyframes pulse-red { from { box-shadow: 0 0 10px rgba(231, 76, 60, 0.4); } to { box-shadow: 0 0 25px rgba(231, 76, 60, 0.7); } }
 
-        /* 아바타 및 텍스트 */
-        .animal-img { width: 52%; aspect-ratio: 1/1; border-radius: 50%; margin-bottom: 5px; }
+        /* 🐹 동물 아바타 이미지 */
+        .animal-img { width: 55%; aspect-ratio: 1/1; border-radius: 50%; margin-bottom: 5px; background-color: #f0f0f0; }
         .name { font-size: 1.2vw; font-weight: bold; color: #333; }
         .class-no { font-size: 0.8vw; color: #888; }
         
-        /* 배지 */
         .count-badge { position: absolute; top: 10px; right: 10px; background: #34495e; color: white; padding: 3px 12px; border-radius: 15px; font-weight: bold; font-size: 1.1vw; }
         .card-red .count-badge { background: #e74c3c; }
     </style>
@@ -81,7 +80,7 @@
 
 <div class="grid-container" id="grid">
     <div style="grid-column: span 8; text-align: center; padding-top: 100px; color: #bbb; font-size: 1.5rem; font-family: 'Jua', sans-serif;">
-        상단의 [파일 선택] 버튼을 눌러 명렬표(CSV)를 불러오세요!
+        명렬표(CSV)를 불러오면 귀여운 동물들이 나타납니다!
     </div>
 </div>
 
@@ -90,7 +89,7 @@
     let originalPrefix = ""; 
     const grid = document.getElementById('grid');
 
-    window.onbeforeunload = function() { return "저장하지 않은 데이터는 사라집니다. 계속하시겠습니까?"; };
+    window.onbeforeunload = function() { return "저장하지 않은 데이터는 사라집니다."; };
 
     document.getElementById('csvFile').addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -132,58 +131,5 @@
         card.id = `card-${index}`;
         updateCardStyle(card, data.count);
         
-        const imgUrl = `https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(data.name)}`;
-        
-        card.innerHTML = `
-            <div class="count-badge" id="count-${index}">${data.count}</div>
-            <img class="animal-img" src="${imgUrl}">
-            <div class="info">
-                <div class="class-no">${data.class}반 ${data.no}번</div>
-                <div class="name">${data.name}</div>
-            </div>
-        `;
-
-        card.onclick = () => {
-            studentData[index].count++;
-            const newCount = studentData[index].count;
-            document.getElementById(`count-${index}`).innerText = newCount;
-            updateCardStyle(card, newCount);
-        };
-
-        grid.appendChild(card);
-    }
-
-    function updateCardStyle(card, count) {
-        card.className = 'student-card'; 
-        if (count > 30) {
-            card.classList.add('card-red');
-        } else if (count > 10) {
-            card.classList.add('card-orange');
-        }
-    }
-
-    function downloadCSV() {
-        if (studentData.length === 0) return alert("데이터가 없습니다.");
-
-        let csvContent = "";
-        studentData.forEach(s => {
-            csvContent += `${s.class},${s.no},${s.name},${s.count}\n`;
-        });
-
-        const today = new Date();
-        const dateStr = today.getFullYear() + 
-                        String(today.getMonth() + 1).padStart(2, '0') + 
-                        String(today.getDate()).padStart(2, '0');
-
-        const newFileName = `${originalPrefix}_${dateStr}.csv`;
-
-        const blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = newFileName;
-        link.click();
-    }
-</script>
-</body>
-</html>
-
+        // 🐹 귀여운 동물 아바타 세팅 (Big Ears 스타일)
+        const
