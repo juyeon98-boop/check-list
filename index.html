@@ -132,4 +132,57 @@
         updateCardStyle(card, data.count);
         
         // 🐹 귀여운 동물 아바타 세팅 (Big Ears 스타일)
-        const
+        const imgUrl = `https://api.dicebear.com/7.x/big-ears-neutral/svg?seed=${encodeURIComponent(data.name)}`;
+        
+        card.innerHTML = `
+            <div class="count-badge" id="count-${index}">${data.count}</div>
+            <img class="animal-img" src="${imgUrl}" alt="animal">
+            <div class="info">
+                <div class="class-no">${data.class}반 ${data.no}번</div>
+                <div class="name">${data.name}</div>
+            </div>
+        `;
+
+        card.onclick = () => {
+            studentData[index].count++;
+            const newCount = studentData[index].count;
+            document.getElementById(`count-${index}`).innerText = newCount;
+            updateCardStyle(card, newCount);
+        };
+
+        grid.appendChild(card);
+    }
+
+    function updateCardStyle(card, count) {
+        card.className = 'student-card'; 
+        if (count > 30) {
+            card.classList.add('card-red');
+        } else if (count > 10) {
+            card.classList.add('card-orange');
+        }
+    }
+
+    function downloadCSV() {
+        if (studentData.length === 0) return alert("데이터가 없습니다.");
+
+        let csvContent = "";
+        studentData.forEach(s => {
+            csvContent += `${s.class},${s.no},${s.name},${s.count}\n`;
+        });
+
+        const today = new Date();
+        const dateStr = today.getFullYear() + 
+                        String(today.getMonth() + 1).padStart(2, '0') + 
+                        String(today.getDate()).padStart(2, '0');
+
+        const newFileName = `${originalPrefix}_${dateStr}.csv`;
+
+        const blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = newFileName;
+        link.click();
+    }
+</script>
+</body>
+</html>
